@@ -51,8 +51,8 @@ stages:
 
   - job: DeployBackendProd
     displayName: Deploy backend to PROD
-    pool:
-      vmImage: 'vs2017-win2016'
+    # pool:
+    #   vmImage: 'vs2017-win2016'
     steps:
     - script: echo deploying backend app to PROD
       displayName: deploy backend app to PROD
