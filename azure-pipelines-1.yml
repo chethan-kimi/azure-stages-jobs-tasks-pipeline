@@ -7,49 +7,50 @@ stages:
 - stage: BuildApp
   displayName: Build Apps
   jobs:
-  - job: ManualApproval
-    displayName: Manual Approval
-    pool: server
-    timeoutInMinutes: 2
-    steps:
-      - task: ManualValidation@1
-        inputs:
-          notifyUsers: 'chethanp4888@outlook.com'
-          instructions: 'Approve the request on validation'
-          onTimeout: 'resume' 
+  # - job: ManualApproval
+  #   displayName: Manual Approval
+  #   pool: server
+  #   timeoutInMinutes: 2
+  #   steps:
+  #     - task: ManualValidation@1
+  #       inputs:
+  #         notifyUsers: 'chethanp4888@outlook.com'
+  #         instructions: 'Approve the request on validation'
+  #         onTimeout: 'resume' 
           
   - job: BuildFrontendApp
     displayName: Build Frontend App
-    dependsOn: ManualApproval
-    pool: azure-test
+    # dependsOn: ManualApproval
+    # pool: azure-test
     steps:
     - script: echo building frontend app
       displayName: build frontend app
     - script: echo running unit tests for frontend app
       displayName: unit tests frontend
 
-#   - job: BuildBackendApp
-#     displayName: Build Backend App
-#     steps:
-#     - script: echo building backend app
-#       displayName: build backend app
-#     - script: echo running unit tests for backend app
-#       displayName: unit tests backend
+  - job: BuildBackendApp
+    displayName: Build Backend App
+    steps:
+    - script: echo building backend app
+      displayName: build backend app
+    - script: echo running unit tests for backend app
+      displayName: unit tests backend
 
-# - stage: DeployDev
-#   displayName: Deploy to DEV environment
-#   jobs:
-#   - job: DeployFrontendDev
-#     displayName: Deploy frontend to DEV
-#     steps:
-#     - script: echo deploying frontend app to DEV
-#       displayName: deploy frontend app to DEV
+- stage: DeployDev
+  displayName: Deploy to DEV environment
+  dependsOn: buildapp
+  jobs:
+  - job: DeployFrontendDev
+    displayName: Deploy frontend to DEV
+    steps:
+    - script: echo deploying frontend app to DEV
+      displayName: deploy frontend app to DEV
 
-#   - job: DeployBackendDev
-#     displayName: Deploy backend to DEV
-#     steps:
-#     - script: echo deploying backend app to DEV
-#       displayName: deploy backend app to DEV
+  - job: DeployBackendDev
+    displayName: Deploy backend to DEV
+    steps:
+    - script: echo deploying backend app to DEV
+      displayName: deploy backend app to DEV
 
 # - stage: DeployProd
 #   displayName: Deploy to PROD environment
